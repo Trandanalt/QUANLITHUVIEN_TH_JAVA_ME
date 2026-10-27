@@ -1,4 +1,6 @@
 package BAI_TAP;
+import java.util.Scanner;
+
 public class QUANLITHUVIEN {
     public static void main(String[] args) {
         System.out.println("HELLO WORLD");
