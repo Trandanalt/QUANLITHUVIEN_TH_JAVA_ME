@@ -51,6 +51,10 @@ class SACH {
         System.out.println("Don gia: " + donGia);
         System.out.println("So luong: " + soluong);
     }
+
+    public void Kiemtrahoplel() {
+        
+    }
 }
 
 public class QUANLITHUVIEN {
