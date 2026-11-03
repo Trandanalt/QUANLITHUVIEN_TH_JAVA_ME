@@ -5,10 +5,13 @@ import java.time.LocalDate;
 class SACH {
     public String maSach;
     public String tenSach;
+    public String loaiSach;
     public String tacGia;
     public int namXuatBan;
     public double donGia;
     public int soluong;
+    SACH ds[];
+    int n;
 
     public void NHAP (Scanner sc) {
         System.out.println("-----Nhap thong tin sach:-------");
@@ -17,6 +20,9 @@ class SACH {
 
         System.out.printf("Nhap ten sach: ");
         tenSach = sc.nextLine();
+
+        System.out.printf("Nhap loai sach: ");
+        loaiSach = sc.nextLine();
 
         System.out.printf("Nhap tac gia: ");
         tacGia = sc.nextLine();
@@ -29,6 +35,26 @@ class SACH {
 
         System.out.printf("Nhap so luong: ");
         soluong = sc.nextInt();
+        sc.nextLine();
+    }
+
+    public void Nhapdanhsach(Scanner sc) {
+        do {
+            System.out.printf("Nhap so luong sach: ");
+            n = sc.nextInt();
+
+            if (n <= 0 || n != (int)n) {
+                System.out.println("So luong sach phai lon hon 0. Vui long nhap lai!");
+            }
+        } while (n <= 0);
+        sc.nextLine();
+
+        ds = new SACH[n+1];
+        for (int i=1; i<=n; i++) {
+            System.out.println("\nNhap thong tin sach thu " + i + ":");
+            ds[i] = new SACH();
+            ds[i].NHAP(sc);
+        }
     }
 
     public double Thanhtien () {
@@ -47,6 +73,7 @@ class SACH {
         System.out.println("-----Thong tin sach:-------");
         System.out.println("Ma sach: " + maSach);
         System.out.println("Ten sach: " + tenSach);
+        System.out.println("Loai sach: " + loaiSach);
         System.out.println("Tac gia: " + tacGia);
         System.out.println("Nam xuat ban: " + namXuatBan);
         System.out.println("Don gia: " + donGia);
@@ -112,8 +139,14 @@ class SACH {
         System.out.println("3. Sach chuyen nganh");
         System.out.println("4. Sach khac");
 
-        System.out.printf("Chon loai sach: ");
-        loaiSach = sc.nextInt();
+        do {
+            System.out.printf("Chon loai sach: ");
+            loaiSach = sc.nextInt();
+
+            if (loaiSach < 1 || loaiSach > 4 || loaiSach != (int)loaiSach) {
+                System.out.println("Loai sach khong hop le. Vui long chon lai!");
+            }
+        } while (loaiSach < 1 || loaiSach > 4 || loaiSach != (int)loaiSach);
 
         switch (loaiSach) {
             case 1:
@@ -132,28 +165,103 @@ class SACH {
                 System.out.println("Khong co loai sach nay!");
         }
     }
+
+    public void TongSL_TongGT() {
+        int tongSL = 0;
+        double TongGT = 0;
+
+        for (int i=1; i<=n; i++) {
+            tongSL += ds[i].soluong;
+            TongGT += ds[i].Tongtien();
+        }
+
+        System.out.println("\nTong so luong sach: " + tongSL);
+        System.out.println("Tong gia tri sach: " + TongGT);
+    }
+
+    public void TIMSACH(Scanner sc) {
+        sc.nextLine();
+        System.out.printf("\nNhap ma sach can tim: ");
+        String Masachcanatim = sc.nextLine();
+        int flag = 0;
+
+        for (int i=1; i<=n; i++) {
+            if (ds[i].maSach.equals(Masachcanatim)) {
+                System.out.println("Thong tin sach can tim: ");
+                ds[i].XUAT();
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag == 0) {
+            System.out.println("Khong tim thay sach co ma " + Masachcanatim);
+        }
+    }
+
+    public void menu(Scanner sc) {
+        int chon;
+
+        System.out.println("\n-----MENU-----");
+        System.out.println("1. Nhap danh sach sach");
+        System.out.println("2. Xuat danh sach sach");
+        System.out.println("3. Tinh tong so luong va tong gia tri sach");
+        System.out.println("4. Tim sach theo ma");
+        System.out.println("5. Chon sach co loai sach (1. Sach giao khoa, 2. Sach tham khao, 3. Sach chuyen nganh, 4. Sach khac) trong thu vien");
+        System.out.println("6. Phan loai gia sach");
+        System.out.println("7. Phan loai ton kho");
+        System.out.println("0. Thoat");
+
+        System.out.printf("Chon chuc nang: ");
+        chon = sc.nextInt();
+
+        switch (chon) {
+           case 1:
+                Nhapdanhsach(sc);
+                break;
+            case 2:
+                for (int i=1; i<=n; i++) {
+                    System.out.println("\nThong tin sach thu " + i + ":");
+                    ds[i].XUAT();
+                }
+                break;
+            case 3:
+                TongSL_TongGT();
+                break;
+            case 4:
+                TIMSACH(sc);
+                break;
+            case 5:
+                Chonloaisach(sc);
+                break;
+            case 6:
+                for (int i=1; i<=n; i++) {
+                    System.out.println("\nThong tin sach thu " + i + ":");
+                    ds[i].Phanloaigia();
+                }
+                break;
+            case 7:
+                for (int i=1; i<=n; i++) {
+                    System.out.println("\nThong tin sach thu " + i + ":");
+                    ds[i].Phanloaitonkho();
+                }
+                break;
+            case 0:
+                System.out.println("Thoat chuong trinh.");
+                System.exit(0);
+            default:
+                System.out.println("Chuc nang khong hop le. Vui long chon lai!");
+        }
+    }
 }
 
 public class QUANLITHUVIEN {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         SACH sach = new SACH();
-        sach.NHAP(sc);
-        sach.XUAT();
 
-        System.out.println("Thanh tien: " + sach.Thanhtien());
-        System.out.println("Phi van chuyen: " + sach.Phivanchuyen());
-        System.out.println("Tong tien: " + sach.Tongtien());
-        System.out.println("\n");
-
-        System.out.printf("Kiem tra tinh hop le cua thong tin sach: \n");
-        sach.Kiemtrahople();
-        System.out.println("\n");
-        sach.Phanloaigia();
-        sach.Phanloaitonkho();
-        sach.Chonloaisach(sc);
-
-        sc.close();
+        while (true) {
+            sach.menu(sc);
+        }
     }
 }
