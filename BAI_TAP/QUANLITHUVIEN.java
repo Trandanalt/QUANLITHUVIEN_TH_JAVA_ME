@@ -52,11 +52,6 @@ class SACH {
             hople = 0;
         }
 
-        if (maSach.contains("|") || tenSach.contains("|") || loaiSach.contains("|") || tacGia.contains("|")) {
-            System.out.println("Thong tin sach khong duoc chua ky tu | !");
-            hople = 0;
-        }
-
         if (donGia <= 0 || !Double.isFinite(donGia)) {
             System.out.println("Don gia khong hop le!");
             hople = 0;
@@ -109,23 +104,6 @@ class SACH {
         }
     }
 
-    public String ChuyenThanhChuoi() {
-        return maSach + "|" + tenSach + "|" + loaiSach + "|" + tacGia + "|"
-                + namXuatBan + "|" + donGia + "|" + soluong;
-    }
-
-    public void GanThongTin(String thongTin) {
-        String[] tt = thongTin.split("\\|", -1);
-
-        maSach = tt[0];
-        tenSach = tt[1];
-        loaiSach = tt[2];
-        tacGia = tt[3];
-        namXuatBan = Integer.parseInt(tt[4]);
-        donGia = Double.parseDouble(tt[5]);
-        soluong = Integer.parseInt(tt[6]);
-    }
-
     public void XUAT() {
         System.out.println("----- Thong tin sach -----");
         System.out.println("Ma sach: " + maSach);
@@ -140,157 +118,14 @@ class SACH {
     public double Thanhtien() {
         return donGia * soluong;
     }
-
-    public double Phivanchuyen() {
-        return 0.05 * Thanhtien();
-    }
-
-    public double Tongtien() {
-        return Thanhtien() + Phivanchuyen();
-    }
 }
 
 public class QUANLITHUVIEN {
-    static ArrayList<String> danhSachMaSach = new ArrayList<>();
-
-    static ArrayList<String> danhSachSach = new ArrayList<>();
-
-    public static void BAI1(Scanner sc) {
-        int[] soLuong = new int[6];
-        int tong = 0;
-        int lonNhat;
-
-        System.out.println("----- BAI 1: MANG SO LUONG 5 CUON SACH -----");
-
-        for (int i = 1; i <= 5; i++) {
-            do {
-                soLuong[i] = SACH.NhapSoNguyen(sc, "Nhap so luong cuon sach thu " + i + ": ");
-                if (soLuong[i] < 0) {
-                    System.out.println("So luong khong duoc am. Vui long nhap lai!");
-                }
-            } while (soLuong[i] < 0);
-        }
-
-        System.out.println("\nDanh sach so luong:");
-        lonNhat = soLuong[1];
-
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("Cuon sach thu " + i + ": " + soLuong[i]);
-            tong += soLuong[i];
-
-            if (soLuong[i] > lonNhat) {
-                lonNhat = soLuong[i];
-            }
-        }
-
-        System.out.println("Tong so luong: " + tong);
-        System.out.println("So luong lon nhat: " + lonNhat);
-    }
-
-    public static void ThemMaSach(Scanner sc) {
-        System.out.print("Nhap ma sach can them: ");
-        String maSach = sc.nextLine().trim();
-
-        if (maSach.isEmpty()) {
-            System.out.println("Ma sach khong duoc de trong!");
-            return;
-        }
-
-        if (danhSachMaSach.contains(maSach)) {
-            System.out.println("Ma sach da ton tai!");
-        } else {
-            danhSachMaSach.add(maSach);
-            System.out.println("Them ma sach thanh cong.");
-        }
-    }
-
-    public static void HienThiMaSach() {
-        if (danhSachMaSach.isEmpty()) {
-            System.out.println("Danh sach ma sach dang rong!");
-            return;
-        }
-
-        System.out.println("----- DANH SACH MA SACH -----");
-        for (int i = 0; i < danhSachMaSach.size(); i++) {
-            System.out.println((i + 1) + ". " + danhSachMaSach.get(i));
-        }
-    }
-
-    public static void TimMaSach(Scanner sc) {
-        System.out.print("Nhap ma sach can tim: ");
-        String maCanTim = sc.nextLine().trim();
-
-        int viTri = -1;
-        for (int i = 0; i < danhSachMaSach.size(); i++) {
-            if (danhSachMaSach.get(i).equalsIgnoreCase(maCanTim)) {
-                viTri = i;
-                break;
-            }
-        }
-
-        if (viTri == -1) {
-            System.out.println("Khong tim thay ma sach " + maCanTim);
-        } else {
-            System.out.println("Tim thay ma sach " + danhSachMaSach.get(viTri)
-                    + " tai vi tri " + (viTri + 1));
-        }
-    }
-
-    public static void XoaMaSach(Scanner sc) {
-        System.out.print("Nhap ma sach can xoa: ");
-        String maCanXoa = sc.nextLine().trim();
-
-        for (int i = 0; i < danhSachMaSach.size(); i++) {
-            if (danhSachMaSach.get(i).equalsIgnoreCase(maCanXoa)) {
-                danhSachMaSach.remove(i);
-                System.out.println("Xoa ma sach thanh cong.");
-                return;
-            }
-        }
-
-        System.out.println("Khong tim thay ma sach can xoa.");
-    }
-
-    public static void MENU_BAI2(Scanner sc) {
-        int chon;
-
-        do {
-            System.out.println("\n----- BAI 2: ARRAYLIST MA SACH -----");
-            System.out.println("1. Them ma sach");
-            System.out.println("2. Hien thi ma sach");
-            System.out.println("3. Tim ma sach");
-            System.out.println("4. Xoa ma sach");
-            System.out.println("0. Quay lai menu chinh");
-
-            chon = SACH.NhapSoNguyen(sc, "Chon chuc nang: ");
-
-            switch (chon) {
-                case 1:
-                    ThemMaSach(sc);
-                    break;
-                case 2:
-                    HienThiMaSach();
-                    break;
-                case 3:
-                    TimMaSach(sc);
-                    break;
-                case 4:
-                    XoaMaSach(sc);
-                    break;
-                case 0:
-                    System.out.println("Quay lai menu chinh.");
-                    break;
-                default:
-                    System.out.println("Chuc nang khong hop le. Vui long chon lai!");
-            }
-        } while (chon != 0);
-    }
+    static ArrayList<SACH> danhSachSach = new ArrayList<>();
 
     public static int TimViTriSach(String maCanTim) {
         for (int i = 0; i < danhSachSach.size(); i++) {
-            String[] thongTin = danhSachSach.get(i).split("\\|", -1);
-
-            if (thongTin[0].equalsIgnoreCase(maCanTim)) {
+            if (danhSachSach.get(i).maSach.equalsIgnoreCase(maCanTim)) {
                 return i;
             }
         }
@@ -299,9 +134,7 @@ public class QUANLITHUVIEN {
 
     public static boolean KiemTraTrungMa(String maSach, int viTriBoQua) {
         for (int i = 0; i < danhSachSach.size(); i++) {
-            String[] thongTin = danhSachSach.get(i).split("\\|", -1);
-
-            if (i != viTriBoQua && thongTin[0].equalsIgnoreCase(maSach)) {
+            if (i != viTriBoQua && danhSachSach.get(i).maSach.equalsIgnoreCase(maSach)) {
                 return true;
             }
         }
@@ -309,20 +142,25 @@ public class QUANLITHUVIEN {
     }
 
     public static void ThemSach(Scanner sc) {
-        SACH sachMoi = new SACH();
+        System.out.println("Nhap so luong sach can them: ");
+        int soluong = SACH.NhapSoNguyen(sc, "So luong: ");
 
-        do {
-            sachMoi.NHAP(sc);
+        for (int i = 0; i < soluong; i++) {
+            while (true) {
+                System.out.println("\nNhap thong tin sach thu " + (i + 1) + ":");
 
-            if (KiemTraTrungMa(sachMoi.maSach, -1)) {
-                System.out.println("Ma sach da ton tai. Vui long nhap lai thong tin sach!");
-            } else {
-                break;
+                SACH sachMoi = new SACH();
+                sachMoi.NHAP(sc);
+
+                if (KiemTraTrungMa(sachMoi.maSach, -1)) {
+                    System.out.println("Ma sach da ton tai. Vui long nhap lai!");
+                } else {
+                    danhSachSach.add(sachMoi);
+                    System.out.println("Them sach thanh cong.");
+                    break;
+                }
             }
-        } while (true);
-
-        danhSachSach.add(sachMoi.ChuyenThanhChuoi());
-        System.out.println("Them sach thanh cong.");
+        }
     }
 
     public static void HienThiSach() {
@@ -333,11 +171,8 @@ public class QUANLITHUVIEN {
 
         System.out.println("----- DANH SACH SACH -----");
         for (int i = 0; i < danhSachSach.size(); i++) {
-            SACH sach = new SACH();
-            sach.GanThongTin(danhSachSach.get(i));
-
-            System.out.println("\nThong tin sach thu " + (i + 1) + ":");
-            sach.XUAT();
+            System.out.println("\nThong tin sach thu " + (i+1) + ":");
+            danhSachSach.get(i).XUAT();
         }
     }
 
@@ -350,10 +185,8 @@ public class QUANLITHUVIEN {
         if (viTri == -1) {
             System.out.println("Khong tim thay sach co ma " + maCanTim);
         } else {
-            SACH sach = new SACH();
-            sach.GanThongTin(danhSachSach.get(viTri));
             System.out.println("Thong tin sach can tim:");
-            sach.XUAT();
+            danhSachSach.get(viTri).XUAT();
         }
     }
 
@@ -383,29 +216,27 @@ public class QUANLITHUVIEN {
         }
 
         System.out.println("Nhap lai toan bo thong tin sach:");
-        SACH sachMoi = new SACH();
+        SACH sachMoi;
 
         do {
+            sachMoi = new SACH();
             sachMoi.NHAP(sc);
 
             if (KiemTraTrungMa(sachMoi.maSach, viTri)) {
                 System.out.println("Ma sach moi da ton tai. Vui long nhap lai!");
             } else {
+                danhSachSach.set(viTri, sachMoi);
+                System.out.println("Cap nhat sach thanh cong.");
                 break;
             }
         } while (true);
-
-        danhSachSach.set(viTri, sachMoi.ChuyenThanhChuoi());
-        System.out.println("Cap nhat sach thanh cong.");
     }
 
     public static void TinhTongSoLuong() {
         int tongSL = 0;
 
         for (int i = 0; i < danhSachSach.size(); i++) {
-            SACH sach = new SACH();
-            sach.GanThongTin(danhSachSach.get(i));
-            tongSL += sach.soluong;
+            tongSL += danhSachSach.get(i).soluong;
         }
 
         System.out.println("Tong so luong sach: " + tongSL);
@@ -415,54 +246,13 @@ public class QUANLITHUVIEN {
         double tongGT = 0;
 
         for (int i = 0; i < danhSachSach.size(); i++) {
-            SACH sach = new SACH();
-            sach.GanThongTin(danhSachSach.get(i));
-            tongGT += sach.Thanhtien();
+            tongGT += danhSachSach.get(i).Thanhtien();
         }
 
         System.out.println("Tong gia tri sach: " + tongGT);
     }
 
-    public static void MENU_BAI3(Scanner sc) {
-        int chon;
-
-        do {
-            System.out.println("\n----- BAI 3: ARRAYLIST THONG TIN SACH -----");
-            System.out.println("1. Them sach");
-            System.out.println("2. Hien thi sach");
-            System.out.println("3. Tim sach");
-            System.out.println("4. Xoa sach");
-            System.out.println("5. Sua sach");
-            System.out.println("0. Quay lai menu chinh");
-
-            chon = SACH.NhapSoNguyen(sc, "Chon chuc nang: ");
-
-            switch (chon) {
-                case 1:
-                    ThemSach(sc);
-                    break;
-                case 2:
-                    HienThiSach();
-                    break;
-                case 3:
-                    TimSach(sc);
-                    break;
-                case 4:
-                    XoaSach(sc);
-                    break;
-                case 5:
-                    SuaSach(sc);
-                    break;
-                case 0:
-                    System.out.println("Quay lai menu chinh.");
-                    break;
-                default:
-                    System.out.println("Chuc nang khong hop le. Vui long chon lai!");
-            }
-        } while (chon != 0);
-    }
-
-    public static void MENU_BAI4(Scanner sc) {
+    public static void MENU(Scanner sc) {
         int chon;
 
         do {
@@ -474,9 +264,9 @@ public class QUANLITHUVIEN {
             System.out.println("5. Sua sach");
             System.out.println("6. Tinh tong so luong");
             System.out.println("7. Tinh tong gia tri");
-            System.out.println("8. Thoat");
+            System.out.println("0. Thoat");
 
-            chon = SACH.NhapSoNguyen(sc, "Chon chuc nang: ");
+            chon = SACH.NhapSoNguyen(sc, "Chon chuc nang (0-7): ");
 
             switch (chon) {
                 case 1:
@@ -500,50 +290,29 @@ public class QUANLITHUVIEN {
                 case 7:
                     TinhTongGiaTri();
                     break;
-                case 8:
+                case 0:
                     System.out.println("Thoat menu quan li thu vien.");
                     break;
                 default:
                     System.out.println("Chuc nang khong hop le. Vui long chon lai!");
             }
-        } while (chon != 8);
+        } while (chon != 0);
     }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int chon;
-
+        int tiepTuc;
         do {
-            System.out.println("\n========== CHUONG TRINH THUC HANH ==========");
-            System.out.println("1. Bai 1 - Mang int[] soLuong");
-            System.out.println("2. Bai 2 - ArrayList<String> ma sach");
-            System.out.println("3. Bai 3 - ArrayList<String> thong tin sach");
-            System.out.println("4. Bai 4 - Menu quan li thu vien");
-            System.out.println("0. Thoat chuong trinh");
+            MENU(sc);
 
-            chon = SACH.NhapSoNguyen(sc, "Chon bai (1, 2, 3, 4, 0): ");
+            System.out.print("Tiep tuc? (1.Y / 0.N): ");
+            tiepTuc = sc.nextInt();
 
-            switch (chon) {
-                case 1:
-                    BAI1(sc);
-                    break;
-                case 2:
-                    MENU_BAI2(sc);
-                    break;
-                case 3:
-                    MENU_BAI3(sc);
-                    break;
-                case 4:
-                    MENU_BAI4(sc);
-                    break;
-                case 0:
-                    System.out.println("Thoat chuong trinh.");
-                    break;
-                default:
-                    System.out.println("Lua chon khong hop le. Vui long chon lai!");
+            if (tiepTuc != 1 && tiepTuc != 0) {
+                System.out.println("Lua chon khong hop le !!!");
+            } else if (tiepTuc == 0) {
+                break;
             }
-        } while (chon != 0);
-
-        sc.close();
+        } while (tiepTuc == 1);
     }
 }
+
